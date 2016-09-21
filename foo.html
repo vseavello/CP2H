@@ -53,15 +53,16 @@ function getCP2HPosts()
                 type: "GET",
                 dataType: "json"
          })
-        .done(function( data ) {
+        .done(function( dataret ) {
 		//$("#posts").append("<PRE>" + $.dump(data) + "</PRE>");
 
+		var data = dataret.data;
                 var html = "no data.";
-                if (data.data)
+                if (data)
                 {
                         html = "<div class='news'>\n";
                         html += url + "\n";
-                        $(data.data).each(function(idx, dobj) {
+                        $(data).each(function(idx, dobj) {
                                 //if (idx < 2)
                                 {
                                         if (idx > 0)
