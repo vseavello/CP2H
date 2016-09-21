@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1.0, initial-scale=1.0" />
+	<title>A Childs Passport To Health</title>
+
+	<link rel="stylesheet" type="text/css" href="css/styles.css" />
+	<link rel="stylesheet" type="text/css" href="css/layout.css" />
+	<link rel="stylesheet" type="text/css" href="css/layout_small.css" media="only screen and (min-width:50px) and (max-width:500px)" />
+	<link rel="stylesheet" type="text/css" href="css/layout_medium.css" media="only screen and (min-width:501px) and (max-width:800px)" />
+	<!--[if lt ID 9]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</HEAD>
+<BODY>
+<div class=page>
+	<header>
+		<a class="logo" href="#"></a>
+	</header>
+
+	<article>
+	<h1>A Child's Passport To Health</h1>
+	<h2>Our Mission</h2>
+	<div class="mission"></div><p>
+	<p>
+	&quot;The best way to find yourself is to lose yourself in the service of others.&quot; - Mahatma Gandhi
+	</p>
+	<p>
+	Our mission is to improve the on-going quality of care for children through surgical/medical intervention and education, in partnership with their biological and host families. To that end, our approach is collaborative and holistic - we are passionate about treating the whole child and providing them not only with the medical care specific to their condition, but also ensuring that each child returns home with the resources and education they will need to continue to grow and thrive.
+	</p>
+	</article>
+
+	<div class="aboutus_container">
+
+		<div class="aboutus one">
+			<div class="content">
+			<h3>Our Story</h3>
+			<p>
+			Our Story
+			</p><a class="cta" href="ourstory.html">See More</a>
+			</div>
+		</div>
+
+		<div class="aboutus two">
+			<div class="content">
+			<h3>Our Mission</h3>
+			<p>
+			Our Mission
+			</p>
+			<h4>This Page</h4>
+			</div>
+		</div>
+
+		<div class="aboutus three">
+			<div class="content">
+			<h3>Contact Us</h3>
+			<p>
+			Contact Us
+			</p><a class="cta" href="contactus.html">See More</a>
+			</div>
+		</div>
+
+		<div class="clear-fix"></div>
+
+	</div>
+	<nav>
+		<a href="index.html">home</a>
+		<a href="ourstory.html">about us</a>
+		<a href="news.html">news</a>
+		<a href="services.html">services</a>
+		<a href="donate.html">donate</a>
+		<a href="photos.html">photos</a>
+	</nav>
+	<footer>
+		&copy; A Child's Passport To Health
+	</footer>
+</div>
+</BODY>
+</HTML>
