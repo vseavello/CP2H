@@ -1,0 +1,108 @@
+@charset "UTF-8";
+
+/* layout global */
+
+body { margin:0; padding: 0; }
+header a.logo {
+	display: block;
+	position: absolute;
+	background-position: 0px 0px;
+	background-repeat: no-repeat;
+}
+
+nav {
+	width: 100%;
+	display: block;
+	position: absolute;
+	/*background: #ffb035;*/
+	background: #f47b20;
+	/*background: #f05133;*/
+}
+
+/* layout large */
+
+header {
+	height: 275px;
+	/*background: #fff url(../images/banner_large.png) no-repeat left 0px;*/
+	/*background: #b4d1d5 url(../images/banner_large.png) no-repeat left 0px;*/
+	background: #00958f url(../images/banner_large.png) no-repeat left 0px;
+}
+
+header a.logo {
+	width: 275px;
+	height: 270px;
+	top: 0;
+	right: 0;
+	background-image: url(../images/logo_large.png);
+}
+
+article { padding: 60px 20px 10px 20px; }
+.panel {
+	width: 50%;
+	float: left;
+	/*background-position: 0px 3px;*/
+}
+
+.promo_container { padding: 0 0 15px 20px; }
+.promo_container .promo {
+	width: 33%;
+	float: left;
+	background-position: 0px 3px;
+}
+
+.promo_container .promo .content { padding: 0 30px 0 70px; }
+
+.aboutus_container { padding: 0 0 15px 20px; }
+.aboutus_container .aboutus {
+	width: 33%;
+	float: left;
+	background-position: 0px 3px;
+}
+
+.aboutus_container .aboutus .content { padding: 0 30px 0 70px; }
+
+.staff_container { padding: 0 0 15px 20px; }
+.staff_container .staff {
+	width: 33%;
+	float: left;
+	background-position: 0px 3px;
+}
+
+.staff_container .staff .content { padding: 0 30px 0 70px; }
+
+.volunteer_content { min-height: 180px; }
+
+.memorium_container { padding: 0 0 15px 70px; }
+.memorium_container .memorium {
+	width: 33%;
+	height: 300px;
+	float: left;
+	background-position: 0px 0px;
+}
+
+.donate_container { padding: 0 0 15px 20px; }
+.donate_container .donate {
+	width: 33%;
+	float: left;
+	background-position: 0px 3px;
+}
+
+.donate_container .donate .content { padding: 0 30px 0 70px; }
+
+.volunteer_container { padding: 0 0 15px 70px; }
+.volunteer_container .volunteer {
+	width: 33%;
+	height: 300px;
+	float: left;
+	background-position: 0px 0px;
+}
+
+
+/*.memorium_container .memorium .content { padding: 0 30px 0 70px; }*/
+
+nav { top: 275px; }
+nav a { margin: 12px 0 10px 20px; }
+
+@media screen and (max-width:990px) {
+	footer { padding-left: 20px; }
+}

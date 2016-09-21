@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1.0, initial-scale=1.0" />
+	<title>Facebook Photos</title>
+
+	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+	<script src="http://www.google.com/jsapi"></script>
+
+	<script src="scripts/jqdump.js"></script>
+	<script src="scripts/dateFormat.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="css/styles.css" />
+	<link rel="stylesheet" type="text/css" href="css/layout.css" />
+	<link rel="stylesheet" type="text/css" href="css/layout_small.css" media="only screen and (min-width:50px) and (max-width:500px)" />
+	<link rel="stylesheet" type="text/css" href="css/layout_medium.css" media="only screen and (min-width:501px) and (max-width:800px)" />
+
+	<!--[if lt ID 9]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</HEAD>
+<BODY>
+<div class=page>
+	<header>
+		<a class="logo" href="#"></a>
+	</header>
+
+	<article>
+		<h1 id='albumTitle'></h1>
+
+<div id="pics"></div>
+
+<style>
+.album_container {
+	text-align: center;
+	width: 250px;
+	height: 250px;
+	margin: 15px 15px 50px 15px;
+	display: block;
+	float: left;
+	border: 1px solid cyan;
+}
+.albumcover {
+	position: relative;
+	width: 250px;
+	height: 250px;
+	overflow: hidden;
+	border: 1px none cyan;
+}
+.albumcover img {
+	position: absolute;
+	right: 0;
+}
+.albuminfo {
+}
+.albumphoto_container {
+	text-align: center;
+	width: 250px;
+	height: 250px;
+	margin: 15px 15px 50px 15px;
+	display: block;
+	float: left;
+	border: 1px solid cyan;
+}
+.albumphoto {
+	position: relative;
+	width: 250px;
+	height: 250px;
+	overflow: hidden;
+	border: 1px none cyan;
+}
+.albumphotoimg img {
+	position: absolute;
+	right: 0;
+}
+.clear-fix {
+	clear: both;
+}
+</style>
+<style>
+</style>
+	</article>
+	<nav>
+		<a href="index.html">home</a>
+		<a href="ourstory.html">about us</a>
+		<a href="news.html">news</a>
+		<a href="services.html">services</a>
+		<a href="donate.html">donate</a>
+	</nav>
+	<footer>
+		&copy; A Child's Passport To Health
+	</footer>
+</div>
+
+<script>
+var albums;
+var albumphotos = new Object;
+var albumphotosinfo = new Object;
+var albumidx = -1;
+var albumphotoidx = -1;
+
+// generated 2016-09-20 - expires in 60 days
+var pageid = "1687150331514073";
+var accesstoken = "EAAIlZAx7c9gkBAOEWqnT6hVRrURKiChvl88OFCzVoaTHUk7CmU9LoKWXDf8USW6cFDfsf1qZCRs2MH8ZBrEtfCZAU6prCoXuVD7HK862dZBcLslFFByYkno0woYBbFgfdHzuiqYCVKZAaGnZCJJzPbNSnXZBczhJGFQZD";
+var expires = "5184000";
+
+var phototagfields = "id,name,created_time";
+var photofields = "id,album,name,name_tags,place,backdated_time,created_time,event";
+var photoinfofields = "album,height,width,name,images,page_story_id,picture";
+var albumphotofields ="id,album,name,updated_time,height,width,images,page_story_id,picture,source";
+// set the limit to 50 for now. It's a kludge!
+var albumfields = "name,cover_photo,count,description,type,picture,photos.limit(50){place,"+albumphotofields+",tags.limit(50){"+phototagfields+"}}";
+var fql = "SELECT status_id, time, source, message FROM status where uid = " + pageid;
+
+function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
+    var width = srcWidth;
+    var height = srcHeight;
+    var ratioW = maxWidth / width;  // Width ratio
+    var ratioH = maxHeight / height;  // Height ratio
+    
+    /*
+     * adjusted height = <user-chosen width> * original height / original width
+     * adjusted width = <user-chosen height> * original width / original height
+     */
+    if(width > height) {
+    	width = maxWidth;
+    	height = width * srcHeight/srcWidth;
+    }
+    else {
+    	height = maxHeight;
+    	width = height * srcWidth/srcHeight;
+    }
+    return {width: width, height: height};
+}
+
+function display_albumphoto(pidx)
+{
+	$("#pics").html("");
+	//window.scrollTo(0,0);
+	if (pidx >= 0)
+		albumphotoidx = pidx;
+	else
+		albumphotoidx++;
+	if (albumphotoidx == albumphotos.length || albumphotoidx < 0)
+		albumphotoidx = 0;
+
+	if (albumphotos[albumphotoidx])
+	{
+		$("#pics").append("<H1>Album: " + albumphotos[albumphotoidx].album.name + "</H1>");
+		if (albums[albumidx].count) $("#pics").append("<p>Picture count: " + (albumphotoidx + 1) + " of " + albums[albumidx].count + "</p>");
+		if (albums[albumidx].description) $("#pics").append("<p>Description: " + albums[albumidx].description + "</p>");
+		if (albumphotos[albumphotoidx].place) $("#pics").append("<p>Place: " + albumphotos[albumphotoidx].place.name + "</p>");
+		if (albumphotos[albumphotoidx].tags &&
+		    albumphotos[albumphotoidx].tags.data &&
+		    albumphotos[albumphotoidx].tags.data.length > 0)
+		{
+			html = "<p>Includes: ";
+			$(albumphotos[albumphotoidx].tags.data).each(function(tidx, tag) {
+				if (tidx > 0)
+					html += ", ";
+				html += tag.name;
+			});
+			html += "</p>";
+			$("#pics").append(html);
+		}
+		if (albumphotos[albumphotoidx].name)
+		{
+			html = "<p style='word-wrap: break-word;'>";
+			html += "Photo name: " + albumphotos[albumphotoidx].name;
+			html += "</p>";
+			$("#pics").append(html);
+		}
+
+		// get the original picture dimensions
+		var picwidth = albumphotos[albumphotoidx].width;
+		var picheight = albumphotos[albumphotoidx].height;
+
+		// add the original picture
+		$("#pics").append("<img src='"+albumphotos[albumphotoidx].images[0].source+"'>");
+	}
+	else
+	{
+		$("#pics").append("<PRE>No Photo Info Available.</PRE>");
+		$("#pics").append("<PRE>"+$.dump(albumphotos[albumphotoidx].place)+"</PRE>");
+	}
+
+}
+
+function display_albumphotos()
+{
+	$("#albumTitle").html("Photos for " + albums[albumidx].name);
+	$("#pics").html("");
+	window.scrollTo(0,0);
+	html = "<a href='javascript:void(0);' onclick='display_albums();'>Go Back To Albums</a><BR>\n";
+	html += "<div class='albumphotos_container'>\n";
+	$(albumphotos).each(function(pidx, pobj) {
+
+		var albumphotoid = pobj.id;
+		var thiswidth = 0;
+		var thisheight = 0;
+		var thisimg = "";
+		var thisidx = -1;
+		for (img in pobj.images)
+		{
+			if (pobj.images[img].height > 250 &&
+			    pobj.images[img].width > 250)
+			{
+			    if (thiswidth > pobj.images[img].width ||
+				thisheight > pobj.images[img].height ||
+				thisimg.length == 0)
+				{
+					thiswidth = pobj.images[img].width;
+					thisheight = pobj.images[img].height;
+					thisimg = pobj.images[img].source;
+					thisidx = img;
+				}
+			}
+		}
+		if (thisidx < 0)
+		{
+			thisimg = pobj.images[0].source;
+			thiswidth = pobj.images[0].width;
+			thisheight = pobj.images[0].height;
+		}
+
+		var albumphotoid = pobj.id;
+
+		html += "<div class='albumphoto_container'>\n";
+		if (pobj.source)
+		{
+			html += "<div class='albumphoto'>\n";
+			html += "<a href='javascript:void(0);' onclick='display_albumphoto("+pidx+");'><img class='albumphotoimg' id='ap_"+albumphotoid+"' src='"+thisimg+"'></a>\n";
+			html += "</div>\n";
+		}
+		html += "<div class='albumphotoinfo'>\n";
+		html += "</div>\n";
+		html += "</div>\n";
+	});
+	html += "<div class='clear-fix'></div>\n";
+	html += "</div>\n";
+	html += "<a href='javascript:void(0);' onclick='display_albums();'>Go Back To Albums</a>\n";
+	$("#pics").append(html);
+}
+
+function display_albums()
+{
+	$("#albumTitle").html("Photo Albums");
+	$("#pics").html("");
+	window.scrollTo(0,0);
+	html = "<div class='albums_container'>\n";
+	$(albums).each(function(aidx, aobj) {
+		var albumid = aobj.id;
+		if (aobj.cover_photo)
+			var coverphotoid = aobj.cover_photo.id;
+		var count = aobj.count;
+		var name = aobj.name;
+		if (count > 0)
+		{
+			html += "<div class='album_container'>\n";
+			if (aobj.cover_photo)
+			{
+				var thisimg = '';
+				var coverphotoid = aobj.cover_photo.id;
+				$(aobj.photos.data).each(function(pidx, pobj) {
+					if (pobj.id == coverphotoid)
+					{
+						var images = pobj.images;
+						var thiswidth = 0;
+						var thisheight = 0;
+						var thisidx = -1;
+						for (img in pobj.images)
+						{
+							if (pobj.images[img].height > 250 &&
+							    pobj.images[img].width > 250)
+							{
+							    if (thiswidth > pobj.images[img].width ||
+								thisheight > pobj.images[img].height ||
+								thisimg.length == 0)
+								{
+									thiswidth = pobj.images[img].width;
+									thisheight = pobj.images[img].height;
+									thisimg = pobj.images[img].source;
+									thisidx = img;
+								}
+							}
+						}
+						if (thisidx < 0)
+						{
+							thisimg = pobj.images[(pobj.images.length - 1)].source;
+						}
+					}
+				});
+
+				html += "<div class='albumcover'>\n";
+				html += "<a href='javascript:void(0);' onclick='getAlbumPhotos("+aidx+");'><img class='coverphoto' id='"+coverphotoid+"' src='"+thisimg+"'></a>\n";
+				html += "</div>\n";
+			}
+			html += "<div class='albuminfo'>\n";
+			html += name + "<BR>\n";
+			html += count + " photos\n";
+			html += "</div>\n";
+			html += "</div>\n";
+		}
+	});
+	html += "<div class='clear-fix'></div>\n";
+	html += "</div>\n";
+	$("#pics").append(html);
+}
+
+// query facebook for list of photos for the specified album id
+function getAlbumPhotos(aidx)
+{
+	albumphotos = albums[aidx].photos.data;
+	albumidx = aidx;
+	albumphotoidx = -1;
+
+	display_albumphotos();
+	return false;
+}
+
+
+// query facebook for the list of albums
+function getAlbums()
+{
+
+	var opts = {fields: albumfields, expires: expires, access_token: accesstoken};
+	var url = "https://graph.facebook.com/"+pageid+"/albums";
+	var optstr = "";
+	for(opt in opts)
+	{
+		if (optstr.length > 0)
+			optstr += "&";
+		optstr += opt + "=" + opts[opt];
+	}
+
+	$.ajax({
+		url: url,
+		data: opts,
+                type: "GET",
+		crossDomain: true,
+		async: false,
+                dataType: "jsonp"
+         })
+        .done(function( data ) {
+		if (data.data) {
+			albums = data.data;
+
+			html = "";
+			$(albums).each(function (aidx, aobj) {
+				if (aobj.count > 0)
+				{
+					html += "album name: " + aobj.name + "\n";
+					html += "<blockquote>\n";
+					$(aobj.photos.data).each(function (pidx, pobj) {
+						html += "Image "+pidx+": " + pobj.width + "x" + pobj.height + "\n";
+						html += "<blockquote>\n";
+						$(pobj.images).each(function (iidx, iobj) {
+							html += iobj.width + "x" + iobj.height + "\n";
+						});
+						html += "</blockquote>\n";
+					});
+					html += "</blockquote>\n";
+					html += "\n";
+				}
+			});
+			$("#pics").append("<PRE>"+html+"</PRE>");
+
+			return true;
+		}
+		else if (data.error) alert("getAlbums: error message: " + data.error.message);
+		else alert("getAlbums: error message: Unknown error.");
+        })
+        .error(function(jqXHR, msg, err) {
+                alert("getAlbums: msg: " + msg + ", err: " + err);
+        });
+	return false;
+}
+
+$(document).ready(function() {
+	$.support.cors = true;
+	getAlbums();
+});
+</script>
+</BODY>
+</HTML>

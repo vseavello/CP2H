@@ -1,0 +1,72 @@
+@charset "UTF-8";
+
+myscreen { width:2px; }
+
+header {
+	height: 200px;
+	/* background: url(../images/banner_medium.png) no-repeat left 0;*/
+	background: #00958f url(../images/banner_medium.png) no-repeat left 0px;
+}
+
+header a.logo {
+	width: 199px;
+	height: 195px;
+	top: 0;
+	right: 20px;
+	background-image: url(../images/logo_medium.png);
+}
+
+article .contactus {
+	float: left;
+	width: 135px;
+	height: 125px;
+	position: relative;
+	margin: 0 10px 10px 0;
+	background: url(../images/hero10_contactus_medium.jpg) no-repeat left 0px;
+}
+
+.cofounders {
+	float: left;
+	width: 145px;
+	height: 128px;
+	position: relative;
+	margin: 0 10px 10px 0;
+	background: url(../images/cofounders_medium.jpg) no-repeat left 0px;
+}
+
+.cofounders .caption {
+	margin-top: 118px;
+	margin-bottom: 10px;
+	font-size: .65em;
+	font-weight: bold;
+	color: #e7a614;
+}
+
+.volunteer .caption {
+	margin-top: 177px;
+}
+
+nav { top: 200px; }
+nav a { margin-right: 20px; }
+
+.promo_container { padding: 0 20px 15px 20px; }
+.promo_container .promo { background-position: 0 0; }
+.promo_container .promo .content { padding: 70px 30px 0 0; }
+
+.staff_container { padding: 0 20px 15px 20px; }
+.staff_container .staff { background-position: 0 0; }
+.staff_container .staff .content { padding: 70px 30px 0 0; }
+
+.memorium_container .memorium { height: 175px; }
+.memorium.one { background-image: url(../images/JoAnn_medium.jpg) }
+.memorium.two { background-image: url(../images/steph_medium.jpg) }
+.memorium.three { background-image: url(../images/paul_medium.jpg) }
+
+.volunteer_container .volunteer { height: 175px; }
+.volunteer.one { background-image: url(../images/AmyBarrow_medium.jpg) }
+.volunteer.two { background-image: url(../images/LeslieGill_medium.jpg) }
+.volunteer.three { background-image: url(../images/DanielleMoody_medium.jpg) }
+.volunteer.four { background-image: url(../images/RobiNaimi_medium.jpg) }
+.volunteer.five { background-image: url(../images/MaisieThompson_medium.jpg) }
+
+body { background-image: none; }
