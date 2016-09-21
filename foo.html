@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1.0, initial-scale=1.0" />
+	<title>A Childs Passport To Health</title>
+
+	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+	<script src="http://www.google.com/jsapi"></script>
+
+	<script src="http://vseavello.com/scripts/jqdump.js"></script>
+
+	<!--[if lt ID 9]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</HEAD>
+<BODY>
+<div class=page>
+	<h1>A Child's Passport To Health</h1>
+	<h2>News</h2>
+
+	<div>
+	  <div>
+		<div id="posts"></div>
+	  </div>
+	</div>
+</div>
+
+<script>
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
+
+function getCP2HPosts()
+{
+	var pageid = "1687150331514073";
+	var accesstoken = "EAAIlZAx7c9gkBAOEWqnT6hVRrURKiChvl88OFCzVoaTHUk7CmU9LoKWXDf8USW6cFDfsf1qZCRs2MH8ZBrEtfCZAU6prCoXuVD7HK862dZBcLslFFByYkno0woYBbFgfdHzuiqYCVKZAaGnZCJJzPbNSnXZBczhJGFQZD";
+	var expires = "5184000";
+
+	fields="id,name,message,story,updated_time,type,status_type,link,picture";
+
+	url   = "https://graph.facebook.com/" + pageid + "/feed";
+	url  += "?access_token=" + accesstoken;
+	url  += "&expires=" + expires;
+	url  += "&fields=" + fields;
+                //url: "http://cp2h.vseavello.com/getPosts.php",
+
+	$.ajax({
+                url: url,
+                type: "GET",
+                dataType: "json"
+         })
+        .done(function( data ) {
+		//$("#posts").append("<PRE>" + $.dump(data) + "</PRE>");
+
+                var html = "no data.";
+                if (data.data)
+                {
+                        html = "<div class='news'>\n";
+                        html += url + "\n";
+                        $(data.data).each(function(idx, dobj) {
+                                //if (idx < 2)
+                                {
+                                        if (idx > 0)
+                                                html += "<HR>\n";
+                                        //html += "<PRE>" + $.dump(dobj) + "\n</PRE>\n";
+                                        if (dobj.updated_time)
+                                        {
+                                                var mydt = dobj.updated_time.substr(0, dobj.updated_time.indexOf('+'));
+                                                var dt = new Date(mydt);
+                                                //html += "Posted: " + dt.format("ddd, mmm dd, yyyy hh:M TT") + "<BR>\n";
+                                                html += "<span class='postdate'>Posted: " + dt.toString() + "</span>\n";
+                                        }
+                                        else if (dobj.created_time)
+                                        {
+                                                var mydt = dobj.created_time.substr(0, dobj.created_time.indexOf('+'));
+                                                var dt = new Date(mydt);
+                                                html += "<span class='postdate'>Posted: " + dt.toString() + "</span>\n";
+                                        }
+                                        if (dobj.story)
+                                                html += "<div apptype='story'><p class='newstitle'>" + dobj.story + "</p></div>\n";
+                                        else
+                                                html += "<BR>\n";
+                                        //if (dobj.picture) html += "<img src='" + dobj.picture + "'>\n";
+                                        if (dobj.link && (dobj.type == "photo" || dobj.type == "link"))
+                                        {
+                                                if (dobj.picture && dobj.status_type !== "shared_story")
+                                                        picture = "<img src='"+dobj.picture+"'>";
+                                                else if (dobj.name)
+                                                        picture = dobj.name;
+                                                else
+                                                        picture = "picture link";
+                                                html += "<div apptype='photo'><a target='_blank' href='"+dobj.link+"'>" + picture + "</a></div>\n";
+                                        }
+                                        if (dobj.description)
+                                        {
+                                                var desc = dobj.description.replaceAll('\\n', '<BR>');
+                                                html += "<div apptype='description'><p>" + desc + "</p></div>\n";
+                                        }
+                                        if (dobj.message)
+                                        {
+                                                var msg = dobj.message.replaceAll('\\n', '<BR>');
+                                                html += "<div apptype='message'><p>" + msg + "</p></div>\n";
+                                        }
+                                        if (dobj.source)
+                                                html += "<div apptype='source'><a href='"+dobj.source+"'>" + dobj.source + "</a></div>\n";
+                                        html += "<BR>\n";
+                                }
+                        });
+			/*
+			html += "hello to you";
+			*/
+                        html += "</div>\n";
+                }
+                else if (data.error)
+                {
+                        //alert("got error");
+                        html = "message: " + data.error.message + "<BR>\n";
+                }
+                else
+                {
+                        //alert("got nothin");
+                        html = "Unknown error. Can't access posts.<BR>\n";
+                }
+                $("#posts").append(html);
+        })
+        .error(function(jqXHR, msg, err) {
+                $("#posts").append("getCP2HPosts: <PRE>" + $.dump(msg) + ", " + $.dump(err) + "</PRE>");
+                return false;
+        });
+	return false;
+}
+
+$(document).ready(function() {
+	getCP2HPosts();
+});
+</script>
+</BODY>
+</HTML>
