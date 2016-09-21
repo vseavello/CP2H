@@ -23,6 +23,7 @@
 
 	<div>
 	  <div>
+		<div id="dbg"></div>
 		<div id="posts"></div>
 	  </div>
 	</div>
@@ -111,9 +112,6 @@ function getCP2HPosts()
                                         html += "<BR>\n";
                                 }
                         });
-			/*
-			html += "hello to you";
-			*/
                         html += "</div>\n";
                 }
                 else if (data.error)
@@ -136,6 +134,7 @@ function getCP2HPosts()
 }
 
 $(document).ready(function() {
+	$("#dbg").append("calling getCP2HPosts<BR>");
 	getCP2HPosts();
 });
 </script>
