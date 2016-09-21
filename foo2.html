@@ -26,7 +26,6 @@ function getCP2HPosts()
 	url  += "?access_token=" + accesstoken;
 	url  += "&expires=" + expires;
 	url  += "&fields=" + fields;
-                //url: "http://cp2h.vseavello.com/getPosts.php",
 
 	$.ajax({
                 url: url,
@@ -34,25 +33,8 @@ function getCP2HPosts()
                 dataType: "json"
          })
         .done(function( dataret ) {
-		//$("#posts").append("<PRE>" + $.dump(data) + "</PRE>");
 
-		var data = dataret.data;
-                var html = "no data.";
-                if (data)
-                {
-                        html = "<div class='news'>\n";
-			html = $.dump(data);
-                        html += "</div>\n";
-                }
-                else if (data.error)
-                {
-                        html = "message: " + data.error.message + "<BR>\n";
-                }
-                else
-                {
-                        html = "Unknown error. Can't access posts.<BR>\n";
-                }
-                $("#posts").append(html);
+                $("#posts").append("<PRE>" + $.dump(dataret) + "</PRE>");
         })
         .error(function(jqXHR, msg, err) {
                 $("#posts").append("getCP2HPosts: <PRE>" + $.dump(msg) + ", " + $.dump(err) + "</PRE>");
