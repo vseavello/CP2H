@@ -9,37 +9,16 @@
 	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 
+<H2>News</H2>
 <div id="dbg"></div>
 <div id="posts"></div>
+<H2>News End</H2>
 
 <script>
 
 function getCP2HPosts()
 {
-	var pageid = "1687150331514073";
-	var accesstoken = "EAAIlZAx7c9gkBAOEWqnT6hVRrURKiChvl88OFCzVoaTHUk7CmU9LoKWXDf8USW6cFDfsf1qZCRs2MH8ZBrEtfCZAU6prCoXuVD7HK862dZBcLslFFByYkno0woYBbFgfdHzuiqYCVKZAaGnZCJJzPbNSnXZBczhJGFQZD";
-	var expires = "5184000";
-
-	fields="id,name,message,story,updated_time,type,status_type,link,picture";
-
-	url   = "https://graph.facebook.com/" + pageid + "/feed";
-	url  += "?access_token=" + accesstoken;
-	url  += "&expires=" + expires;
-	url  += "&fields=" + fields;
-
-	$.ajax({
-                url: url,
-                type: "GET",
-                dataType: "json"
-         })
-        .done(function( dataret ) {
-
-                $("#posts").append("<PRE>" + $.dump(dataret) + "</PRE>");
-        })
-        .error(function(jqXHR, msg, err) {
-                $("#posts").append("getCP2HPosts: <PRE>" + $.dump(msg) + ", " + $.dump(err) + "</PRE>");
-                return false;
-        });
+	$("#posts").append("<PRE>test</PRE>");
 	return false;
 }
 
