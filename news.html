@@ -60,6 +60,7 @@ String.prototype.replaceAll = function(search, replacement) {
 
 function getCP2HPosts()
 {
+	alert("getCP2HPosts");
 	var pageid = "1687150331514073";
 	var accesstoken = "EAAIlZAx7c9gkBAOEWqnT6hVRrURKiChvl88OFCzVoaTHUk7CmU9LoKWXDf8USW6cFDfsf1qZCRs2MH8ZBrEtfCZAU6prCoXuVD7HK862dZBcLslFFByYkno0woYBbFgfdHzuiqYCVKZAaGnZCJJzPbNSnXZBczhJGFQZD";
 	var expires = "5184000";
@@ -148,6 +149,7 @@ function getCP2HPosts()
 }
 
 $(document).ready(function() {
+	alert("calling getCP2HPosts");
 	getCP2HPosts();
 });
 </script>
